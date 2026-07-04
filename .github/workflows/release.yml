@@ -1,0 +1,44 @@
+# Required GitHub Secrets — configure in Settings > Secrets and variables > Actions:
+#
+#   GPG_PRIVATE_KEY    ASCII-armored GPG private key used to sign artifacts.
+#                      Export with: gpg --export-secret-keys --armor <KEY_ID>
+#
+#   GPG_PASSPHRASE     Passphrase protecting the GPG key above.
+#
+#   SONATYPE_USERNAME  Sonatype Central Portal user token (not your account username).
+#                      Generate in https://central.sonatype.com > Account > Generate User Token
+#
+#   SONATYPE_PASSWORD  The token secret paired with SONATYPE_USERNAME above.
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 21 with Maven Central credentials and GPG
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+          server-id: central
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+
+      - name: Publish to Maven Central
+        run: mvn clean deploy -Prelease --no-transfer-progress
+        env:
+          MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}

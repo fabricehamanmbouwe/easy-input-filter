@@ -1,0 +1,16 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: easy-input-filter-playground
+
+easy-input-filter:
+  enabled: true
+  phone-detection:
+    enabled: true
+    countries: [ FR, BE, CA ]
+  # Pour tester le webhook : décommentez et remplacez par votre URL webhook.site
+  # webhook:
+  #   enabled: true
+  #   url: https://webhook.site/YOUR-UNIQUE-UUID

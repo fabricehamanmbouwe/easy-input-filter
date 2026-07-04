@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # SonarCloud needs full history to compute blame data
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Build and run tests
+        run: mvn clean verify --no-transfer-progress
+
+      # ── SonarCloud ────────────────────────────────────────────────────────
+      # Requires the SONAR_TOKEN secret to be configured in:
+      #   GitHub Settings > Secrets and variables > Actions > New repository secret
+      # Create the token at: https://sonarcloud.io > My Account > Security
+      # The step skips gracefully when SONAR_TOKEN is absent (no build failure).
+      - name: SonarCloud Analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          if [ -n "$SONAR_TOKEN" ]; then
+            mvn sonar:sonar -Psonar --no-transfer-progress
+          else
+            echo "SONAR_TOKEN not configured — skipping SonarCloud analysis"
+            echo "Add SONAR_TOKEN in GitHub Settings > Secrets and variables > Actions"
+          fi
+
+      # ── OWASP Dependency-Check ────────────────────────────────────────────
+      # Runs only on pushes to main (not on PRs) to avoid slowing down reviews.
+      # Fails the build if any dependency has a CVSS score >= 7 (HIGH/CRITICAL).
+      - name: OWASP Dependency Check
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: mvn dependency-check:check -Psecurity -DossindexAnalyzerEnabled=false --no-transfer-progress

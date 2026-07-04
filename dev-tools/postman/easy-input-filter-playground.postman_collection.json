@@ -1,0 +1,897 @@
+{
+  "info": {
+    "_postman_id": "d4f1a2b3-c5e6-7890-abcd-ef1234567890",
+    "name": "easy-input-filter playground",
+    "description": "Valide chaque feature de la librairie easy-input-filter en isolation.\nUne requête PASS + une requête FAIL par endpoint.\n\nPré-requis : lancer dev-tools (port 8081) avant d'exécuter la collection.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8081/playground",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "@NoPhone",
+      "item": [
+        {
+          "name": "FAIL — numéro de téléphone détecté → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 400 (REJECT)', function() {",
+                  "  pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Response body contains field and detector', function() {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('field');",
+                  "  pm.expect(json.detector).to.equal('phone');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"06 12 34 56 78\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/no-phone",
+              "host": ["{{baseUrl}}"],
+              "path": ["no-phone"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PASS — texte propre → 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 (PASS)', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Value returned unchanged', function() {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.value).to.equal('Bonjour monde');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"Bonjour monde\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/no-phone",
+              "host": ["{{baseUrl}}"],
+              "path": ["no-phone"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "@NoEmail",
+      "item": [
+        {
+          "name": "FAIL — email détecté → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 400 (REJECT)', function() {",
+                  "  pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Detector is email', function() {",
+                  "  pm.expect(pm.response.json().detector).to.equal('email');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"test@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/no-email",
+              "host": ["{{baseUrl}}"],
+              "path": ["no-email"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PASS — texte propre → 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 (PASS)', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"Bonjour monde\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/no-email",
+              "host": ["{{baseUrl}}"],
+              "path": ["no-email"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "@NoUrl",
+      "item": [
+        {
+          "name": "FAIL — URL https détectée → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 400 (REJECT)', function() {",
+                  "  pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Detector is url', function() {",
+                  "  pm.expect(pm.response.json().detector).to.equal('url');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"https://example.com/x\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/no-url",
+              "host": ["{{baseUrl}}"],
+              "path": ["no-url"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "FAIL — lien wa.me (deep-link) détecté → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 400 (bare domain)', function() {",
+                  "  pm.response.to.have.status(400);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"wa.me/33612345678\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/no-url",
+              "host": ["{{baseUrl}}"],
+              "path": ["no-url"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PASS — texte propre → 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 (PASS)', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"Bonjour monde\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/no-url",
+              "host": ["{{baseUrl}}"],
+              "path": ["no-url"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "@NoKeywords",
+      "item": [
+        {
+          "name": "FAIL — keyword 'whatsapp' détecté → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 400 (REJECT)', function() {",
+                  "  pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Detector is keywords', function() {",
+                  "  pm.expect(pm.response.json().detector).to.equal('keywords');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"Contactez-moi sur WhatsApp\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/no-keywords",
+              "host": ["{{baseUrl}}"],
+              "path": ["no-keywords"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PASS — texte propre → 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 (PASS)', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"Contacter le vendeur directement\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/no-keywords",
+              "host": ["{{baseUrl}}"],
+              "path": ["no-keywords"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "@NoHtml",
+      "item": [
+        {
+          "name": "FAIL — balise script détectée → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 400 (REJECT)', function() {",
+                  "  pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Detector is html', function() {",
+                  "  pm.expect(pm.response.json().detector).to.equal('html');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"<script>alert(1)</script>\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/no-html",
+              "host": ["{{baseUrl}}"],
+              "path": ["no-html"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PASS — texte sans HTML → 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 (PASS)', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"Texte simple sans balises\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/no-html",
+              "host": ["{{baseUrl}}"],
+              "path": ["no-html"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "@Sanitize (stratégie SANITIZE — toujours 200)",
+      "item": [
+        {
+          "name": "DIRTY — HTML + espaces → sanitisé (200, valeur modifiée)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 (SANITIZE never rejects)', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('HTML supprimé et espaces normalisés', function() {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.value).to.equal('VIP client fidele');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"  <b>VIP</b>   client    fidele  \"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/sanitize",
+              "host": ["{{baseUrl}}"],
+              "path": ["sanitize"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CLEAN — texte propre → retourné tel quel (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 (PASS)', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Value unchanged', function() {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.value).to.equal('Texte propre');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"Texte propre\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/sanitize",
+              "host": ["{{baseUrl}}"],
+              "path": ["sanitize"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "@MaxRepeatChar(3) (stratégie SANITIZE — toujours 200)",
+      "item": [
+        {
+          "name": "DIRTY — répétitions excessives → collapsées (200, valeur modifiée)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 (SANITIZE)', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Répétitions réduites à 3 max', function() {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.value).to.equal('Suuuper!!!');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"Suuuuuper!!!!!!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/max-repeat-char",
+              "host": ["{{baseUrl}}"],
+              "path": ["max-repeat-char"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "CLEAN — répétitions normales → inchangé (200)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 (PASS)', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Value unchanged', function() {",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json.value).to.equal('Super!');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"Super!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/max-repeat-char",
+              "host": ["{{baseUrl}}"],
+              "path": ["max-repeat-char"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "@AllowedChars(\"0-9+\\\\-\\\\s\")",
+      "item": [
+        {
+          "name": "FAIL — lettre non autorisée → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 400 (REJECT)', function() {",
+                  "  pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Detector is allowed-chars', function() {",
+                  "  pm.expect(pm.response.json().detector).to.equal('allowed-chars');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"Hello World\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/allowed-chars",
+              "host": ["{{baseUrl}}"],
+              "path": ["allowed-chars"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PASS — chiffres, + et espaces uniquement → 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 (PASS)', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"+33 6 12 34 56\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/allowed-chars",
+              "host": ["{{baseUrl}}"],
+              "path": ["allowed-chars"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "@Honeypot",
+      "item": [
+        {
+          "name": "FAIL — champ honeypot rempli (bot) → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 400 (REJECT)', function() {",
+                  "  pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Detector is honeypot', function() {",
+                  "  pm.expect(pm.response.json().detector).to.equal('honeypot');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"realField\": \"Bonjour\",\n  \"website\": \"http://spam.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/honeypot",
+              "host": ["{{baseUrl}}"],
+              "path": ["honeypot"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PASS — champ honeypot vide (humain) → 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 (PASS)', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('realField returned', function() {",
+                  "  pm.expect(pm.response.json().realField).to.equal('Bonjour');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"realField\": \"Bonjour\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/honeypot",
+              "host": ["{{baseUrl}}"],
+              "path": ["honeypot"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "@RequestParam + @NoPhone (paramètre méthode)",
+      "item": [
+        {
+          "name": "FAIL — téléphone dans query param → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 400 (REJECT)', function() {",
+                  "  pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Detector is phone', function() {",
+                  "  pm.expect(pm.response.json().detector).to.equal('phone');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{baseUrl}}/request-param?phone=0612345678",
+              "host": ["{{baseUrl}}"],
+              "path": ["request-param"],
+              "query": [
+                {
+                  "key": "phone",
+                  "value": "0612345678"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PASS — texte propre dans query param → 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 (PASS)', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Phone value returned', function() {",
+                  "  pm.expect(pm.response.json().phone).to.equal('Bonjour');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{baseUrl}}/request-param?phone=Bonjour",
+              "host": ["{{baseUrl}}"],
+              "path": ["request-param"],
+              "query": [
+                {
+                  "key": "phone",
+                  "value": "Bonjour"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Champ hérité (@NoPhone sur classe parente)",
+      "item": [
+        {
+          "name": "FAIL — téléphone dans champ hérité → 400",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 400 (inherited field detected)', function() {",
+                  "  pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Detector is phone', function() {",
+                  "  pm.expect(pm.response.json().detector).to.equal('phone');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"06 12 34 56 78\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/inherited-field",
+              "host": ["{{baseUrl}}"],
+              "path": ["inherited-field"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PASS — texte propre dans champ hérité → 200",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 (PASS)', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"Bonjour monde\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/inherited-field",
+              "host": ["{{baseUrl}}"],
+              "path": ["inherited-field"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Webhook trigger (@NoPhone — déclenche webhook si configuré)",
+      "item": [
+        {
+          "name": "FAIL — téléphone détecté → 400 (+ webhook fire si configuré)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 400 (REJECT)', function() {",
+                  "  pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Detector is phone', function() {",
+                  "  pm.expect(pm.response.json().detector).to.equal('phone');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"06 12 34 56 78\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/webhook-trigger",
+              "host": ["{{baseUrl}}"],
+              "path": ["webhook-trigger"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PASS — texte propre → 200 (pas de webhook)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status is 200 (PASS)', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"value\": \"Bonjour monde\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/webhook-trigger",
+              "host": ["{{baseUrl}}"],
+              "path": ["webhook-trigger"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

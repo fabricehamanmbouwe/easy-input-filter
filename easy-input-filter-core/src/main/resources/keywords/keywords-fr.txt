@@ -1,0 +1,106 @@
+# Mots-clés de contournement marketplace — FR (Free tier)
+# Appliqués globalement sur tous les champs String filtrés.
+# Version 0.1.1 — enrichie avant publication
+
+# ── Applications de messagerie ──────────────────────────────
+whatsapp
+wsp
+telegram
+signal
+viber
+wechat
+messenger
+snapchat
+instagram
+insta
+facebook
+fb
+skype
+discord
+imo
+botim
+line
+kakao
+
+# ── Contact direct explicite ─────────────────────────────────
+contactez-moi
+contact direct
+contacte-moi
+contacte moi
+appelle-moi
+appelle moi
+rappelle-moi
+rappelle moi
+rappellez-moi
+écrivez-moi
+écris-moi
+rejoignez-moi
+rejoins-moi
+retrouvez-moi
+retrouve-moi
+
+# ── Coordonnées personnelles ─────────────────────────────────
+mon numéro
+mon numero
+mon num
+mon portable
+mon téléphone
+mon telephone
+mon tel
+mon tél
+mon email
+mon mail
+mon adresse
+mon insta
+mon snap
+mon whatsapp
+mon compte
+ma page
+mon profil
+
+# ── Canaux alternatifs ────────────────────────────────────────
+par sms
+par texto
+par message
+en mp
+en dm
+mp moi
+dm moi
+dm-moi
+message direct
+message privé
+message prive
+appel direct
+via whatsapp
+via telegram
+via signal
+
+# ── Contournement explicite de la plateforme ─────────────────
+hors plateforme
+hors de la plateforme
+en dehors de la plateforme
+sans commission
+sans frais
+éviter les frais
+eviter les frais
+en direct
+en privé
+en prive
+entre nous
+à l'extérieur
+a l'exterieur
+autrement
+par ailleurs
+
+# ── Redirections externes ─────────────────────────────────────
+lien en bio
+voir profil
+mon site
+allez sur
+va sur
+rendez-vous sur
+cliquez ici
+cliquer ici
+voir ma page
+
+rejoindre le groupe

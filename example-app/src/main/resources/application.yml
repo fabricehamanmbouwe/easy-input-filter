@@ -1,0 +1,8 @@
+server:
+  port: 8080
+
+easy-input-filter:
+  enabled: true
+  phone-detection:
+    enabled: true
+    countries: [ FR, BE, CA ]

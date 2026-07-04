@@ -1,0 +1,101 @@
+# Marketplace bypass keywords — EN (Free tier)
+# Applied globally to all filtered String fields.
+# Version 0.1.1 — enriched before publication
+
+# ── Messaging apps ────────────────────────────────────────────
+whatsapp
+wsp
+telegram
+signal
+viber
+wechat
+messenger
+snapchat
+instagram
+insta
+facebook
+fb
+skype
+discord
+imo
+botim
+line
+kakao
+
+# ── Direct contact ────────────────────────────────────────────
+contact me directly
+contact me outside
+reach me at
+reach me on
+text me at
+text me on
+call me at
+call me on
+message me at
+message me on
+write me at
+find me on
+add me on
+chat with me on
+talk to me on
+
+# ── Personal details ─────────────────────────────────────────
+my number is
+my number
+my phone is
+my phone number
+my cell
+my mobile
+my email is
+my email
+my address is
+my instagram
+my snap
+my whatsapp
+my account
+my profile
+my page
+
+# ── Alternative channels ─────────────────────────────────────
+dm me
+dm-me
+direct message me
+direct message
+in dms
+in dm
+private message
+pm me
+pm-me
+via whatsapp
+via telegram
+via signal
+via instagram
+
+# ── Platform bypass explicit ──────────────────────────────────
+off-platform
+off platform
+bypass platform
+outside the app
+outside the platform
+outside this platform
+without fees
+avoid fees
+no commission
+skip the platform
+around the platform
+direct deal
+deal directly
+meet outside
+connect outside
+go around
+
+# ── External redirects ────────────────────────────────────────
+link in bio
+see my profile
+visit my site
+go to my
+check my page
+find me at
+join my group
+see my page
+click here
