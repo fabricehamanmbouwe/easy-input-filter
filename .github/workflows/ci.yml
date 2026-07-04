@@ -23,21 +23,18 @@ jobs:
           java-version: '21'
           cache: maven
 
-      - name: Build and run tests
-        run: mvn clean verify --no-transfer-progress
-
-      # ── SonarCloud ────────────────────────────────────────────────────────
-      # Requires the SONAR_TOKEN secret to be configured in:
-      #   GitHub Settings > Secrets and variables > Actions > New repository secret
-      # Create the token at: https://sonarcloud.io > My Account > Security
-      # The step skips gracefully when SONAR_TOKEN is absent (no build failure).
-      - name: SonarCloud Analysis
+      # ── Build + tests + SonarCloud in one Maven invocation ───────────────
+      # Running verify and sonar:sonar together ensures the Sonar Scanner has
+      # access to the full Maven reactor model and JaCoCo XML reports.
+      # SonarCloud analysis is skipped gracefully when SONAR_TOKEN is absent.
+      - name: Build, test and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           if [ -n "$SONAR_TOKEN" ]; then
-            mvn sonar:sonar -Psonar --no-transfer-progress
+            mvn clean verify sonar:sonar -Psonar --no-transfer-progress
           else
+            mvn clean verify --no-transfer-progress
             echo "SONAR_TOKEN not configured — skipping SonarCloud analysis"
             echo "Add SONAR_TOKEN in GitHub Settings > Secrets and variables > Actions"
           fi
