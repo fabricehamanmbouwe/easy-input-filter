@@ -24,10 +24,16 @@ jobs:
           java-version: '21'
 
       # ── 3. Maven cache ────────────────────────────────────────────────────
-      - name: Cache Maven repository
+      # Caches both the Maven artifact repository and the OWASP NVD database.
+      # The NVD database is stored at ~/.m2/dependency-check-data (configured
+      # via <dataDirectory> in pom.xml -Psecurity) and can take several minutes
+      # to download on a cold run — subsequent runs restore it from cache.
+      - name: Cache Maven repository and OWASP NVD data
         uses: actions/cache@v4
         with:
-          path: ~/.m2/repository
+          path: |
+            ~/.m2/repository
+            ~/.m2/dependency-check-data
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-

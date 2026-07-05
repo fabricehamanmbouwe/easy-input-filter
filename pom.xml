@@ -333,6 +333,8 @@
                             <failBuildOnCVSS>7</failBuildOnCVSS>
                             <format>HTML</format>
                             <outputDirectory>${project.build.directory}/dependency-check-report</outputDirectory>
+                            <!-- Persist NVD database across runs — cached in CI via ~/.m2/dependency-check-data -->
+                            <dataDirectory>${user.home}/.m2/dependency-check-data</dataDirectory>
                             <!-- Disable OSS Index — requires credentials; NVD is sufficient -->
                             <ossIndexAnalyzerEnabled>false</ossIndexAnalyzerEnabled>
                         </configuration>
